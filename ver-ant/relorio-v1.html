@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relógio de Parede 2012</title>
+    <style>
+        /* CSS Clássico de 2012 para centralização */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Garante que o corpo ocupe toda a tela */
+            display: table; /* Truque antigo para centralizar verticalmente */
+            width: 100%;
+            background-color: #000; /* Fundo preto */
+        }
+
+        #relogio-container {
+            display: table-cell;
+            vertical-align: middle; /* Centraliza verticalmente */
+            text-align: center; /* Centraliza horizontalmente */
+        }
+
+        #relogio {
+            font-family: monospace; /* Fonte simples e compatível */
+            font-size: 15vw; /* Tamanho da fonte proporcional à largura da tela */
+            color: #00FF00; /* Cor verde "Matrix" */
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Sombra suave */
+            padding: 20px;
+        }
+
+        /* Opcional: Para tablets sem tela cheia, garante que não haja scroll */
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="relogio-container">
+        <div id="relogio">00:00:00</div>
+    </div>
+
+    <script>
+        // JavaScript de 2012 (apenas 'var', sem arrow functions ou 'const/let')
+        
+        function atualizarRelogio() {
+            // Usa 'var' para declarar variáveis
+            var data = new Date();
+            var horas = data.getHours();
+            var minutos = data.getMinutes();
+            var segundos = data.getSeconds();
+
+            // Função para adicionar zero inicial (se o número for menor que 10)
+            function formatarTempo(tempo) {
+                // Concatenação de string com '+' (sem template literals)
+                return (tempo < 10) ? "0" + tempo : tempo;
+            }
+
+            // Formata a hora, minuto e segundo
+            horas = formatarTempo(horas);
+            minutos = formatarTempo(minutos);
+            segundos = formatarTempo(segundos);
+
+            // Monta o texto do relógio
+            var tempoCompleto = horas + ":" + minutos + ":" + segundos;
+
+            // Encontra o elemento e atualiza o conteúdo
+            var elementoRelogio = document.getElementById("relogio");
+            if (elementoRelogio) {
+                elementoRelogio.innerHTML = tempoCompleto;
+            }
+        }
+
+        // Chama a função imediatamente para evitar um 'vazio' inicial
+        atualizarRelogio();
+
+        // Configura o intervalo para atualizar o relógio a cada 1 segundo (1000 milissegundos)
+        // Isso é o cerne do relógio
+        var intervalo = setInterval(atualizarRelogio, 1000);
+        
+        // Em um projeto real, você precisaria de uma maneira de o usuário sair do modo tela cheia.
+        // Como o foco é o tablet antigo, isso não é essencial agora.
+
+    </script>
+
+</body>
+</html>

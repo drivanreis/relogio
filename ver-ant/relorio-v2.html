@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relógio Digital V2 - Compatível</title>
+    <style>
+        /* CSS BÁSICO E COMPATÍVEL (2012) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+            font-family: monospace; /* Fonte simples e compatível */
+            color: #FF0000; /* Vermelho principal */
+            display: table; /* Para centralização vertical */
+            overflow: hidden;
+        }
+
+        #relogio-geral {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            padding-bottom: 5%; /* Espaço na parte inferior para a data */
+        }
+
+        /* ESTILO DO RELÓGIO PRINCIPAL (HORA) */
+        #hora {
+            font-size: 20vw; /* Bem grande, proporcional à tela */
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7); /* Efeito de brilho LED */
+            line-height: 1; /* Garante que a linha não fique muito alta */
+            margin-bottom: 20px;
+        }
+        
+        /* ESTILO DOS CAMPOS DE DATA E RODAPÉ */
+        #data-container {
+            width: 80%; /* Ocupa 80% da largura */
+            margin: 0 auto; /* Centraliza horizontalmente */
+            display: table; /* Para alinhar os campos */
+            table-layout: fixed; /* Divide o espaço uniformemente */
+            font-size: 4vw;
+            line-height: 1.2;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+
+        .campo {
+            display: table-cell;
+            text-align: center;
+        }
+
+        .titulo {
+            font-size: 2vw; /* Título menor para 'DIA', 'MÊS', etc. */
+            opacity: 0.7; /* Suaviza um pouco o texto */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="relogio-geral">
+        <div id="hora">00:00:00</div>
+
+        <div id="data-container">
+            <div class="campo">
+                <div id="diaMes">01</div>
+                <div class="titulo">DIA</div>
+            </div>
+            <div class="campo">
+                <div id="mesAno">01</div>
+                <div class="titulo">MÊS</div>
+            </div>
+            <div class="campo">
+                <div id="anoCompleto">2025</div>
+                <div class="titulo">ANO</div>
+            </div>
+            </div>
+    </div>
+
+    <script>
+        // JAVASCRIPT LEGADO (2012)
+        var diasDaSemana = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+        var meses = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+
+        function atualizarRelogio() {
+            var data = new Date();
+            
+            // 1. Lógica da Hora
+            var horas = data.getHours();
+            var minutos = data.getMinutes();
+            var segundos = data.getSeconds();
+
+            function formatarTempo(tempo) {
+                return (tempo < 10) ? "0" + tempo : tempo;
+            }
+
+            var tempoCompleto = formatarTempo(horas) + ":" + formatarTempo(minutos) + ":" + formatarTempo(segundos);
+            document.getElementById("hora").innerHTML = tempoCompleto;
+
+            // 2. Lógica da Data
+            var dia = data.getDate();
+            var mesIndex = data.getMonth();
+            var ano = data.getFullYear();
+            
+            // Atualiza os elementos de data
+            document.getElementById("diaMes").innerHTML = formatarTempo(dia);
+            // Mostrar o mês por extenso (3 letras)
+            document.getElementById("mesAno").innerHTML = formatarTempo(mesIndex + 1); // Como você tinha um número na imagem, vamos manter o número
+            document.getElementById("anoCompleto").innerHTML = ano;
+            
+            // Opcional: Se quiser mostrar o dia da semana:
+            // var diaSemanaIndex = data.getDay();
+            // document.getElementById("diaSemana").innerHTML = diasDaSemana[diaSemanaIndex];
+        }
+
+        // Inicia e repete a cada segundo
+        atualizarRelogio();
+        var intervalo = setInterval(atualizarRelogio, 1000);
+        
+        // FASE 3: A busca da TEMPERATURA será o próximo passo.
+    </script>
+
+</body>
+</html>

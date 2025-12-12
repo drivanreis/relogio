@@ -8,9 +8,9 @@
 
 :root{
     --bg: #000;
-    --led: #ff1a1a; /* vermelho vivo (números) */
-    --box-bg: rgba(255, 0, 0, 0.06); /* leve fundo dos visores */
-    --label-color: #ffffff; /* branco para labels como Dia/Mês/Ano/Temp */
+    --led: #ff1a1a; 
+    --box-bg: rgba(255, 0, 0, 0.08); 
+    --label-color: #ffffff; 
 }
 
 /* Reset básico */
@@ -18,10 +18,10 @@
 
 html, body {
     height: 100%;
+    width: 100%;
     background: var(--bg);
-    font-family: Arial, Helvetica, sans-serif; /* padrão para labels e semana */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden; /* Evita barras de rolagem */
 }
 
 .container {
@@ -30,92 +30,124 @@ html, body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 20px;
+    width: 100%;
+    padding: 2vh 2vw; /* Margem dinâmica */
 }
 
-/* HORA: fonte digital grande */
+/* ================== HORA GIGANTE ================== */
+/* A mágica acontece aqui: usamos 'min' para pegar o maior tamanho 
+   possível que caiba tanto na largura (vw) quanto na altura (vh) */
 #hora {
     font-family: "Digital7", monospace;
     color: var(--led);
-    font-size: 160px;
-    letter-spacing: 8px;
-    line-height: 1;
+    
+    /* Tenta usar 35% da largura. Se ficar muito alto, trava em 55% da altura da tela */
+    font-size: min(28vw, 55vh); 
+    
+    line-height: 0.9;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 2vh; /* Espaço dinâmico abaixo da hora */
+    text-shadow: 0 0 20px rgba(255, 26, 26, 0.6); /* Efeito neon leve */
 }
 
-/* ============= DIA DA SEMANA ============= */
-#semana {
-    color: var(--led);                 /* vermelho */
-    font-size: 32px;                   /* tamanho igual ao estilo do relógio real */
-    font-weight: bold;                 /* mais visível */
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-}
-
-/* Linha inferior com dia, mês, ano, temp */
+/* ================== LINHA INFERIOR ================== */
 .bottom-row {
     display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
+    width: 100%;
+    justify-content: center; /* Centraliza o grupo */
+    gap: 3vw; /* Espaço entre os blocos baseados na largura da tela */
 }
 
-/* Cada bloco (dia, mês, ano, temp) */
+/* Cada grupo (Data/Temp) */
 .date-group, .temp-group {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Caixa do número (digital) */
+/* ============= DIA DA SEMANA (Dentro da caixa) ============= */
+#semana-dia {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.semana-text {
+    font-size: 0.5em; /* Metade do tamanho do número */
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: var(--led);
+    opacity: 0.9;
+}
+
+/* ================== CAIXAS DOS NÚMEROS ================== */
 .date-box {
     font-family: "Digital7", monospace;
     color: var(--led);
     background: var(--box-bg);
-    padding: 10px 18px;
-    border-radius: 8px;
-    min-width: 90px;
+    
+    /* Tamanho dinâmico para a linha de baixo */
+    /* Tenta 7% da largura, mas trava em 12% da altura se a tela for muito larga */
+    font-size: min(7vw, 12vh);
+    
+    padding: 0.1em 0.4em;
+    border-radius: 10px;
     text-align: center;
-    font-size: 40px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Profundidade */
+    
+    /* Garante que todos tenham uma altura consistente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5em; 
 }
 
-/* Ano usa mais espaço */
+/* O box do Ano precisa ser um pouco mais largo */
 .date-group:nth-child(3) .date-box {
-    min-width: 140px;
-    font-size: 36px;
+    min-width: 3.5em;
 }
 
 /* Temperatura */
 .temp-group .date-box {
-    min-width: 110px;
-    font-size: 40px;
+    min-width: 3em;
 }
 
-/* Labels brancas */
+/* ================== LEGENDAS (Dia, Mês, Ano) ================== */
 .label {
-    margin-top: 6px;
+    margin-top: 1vh;
     color: var(--label-color);
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
+    
+    /* Tamanho do texto da legenda também dinâmico */
+    font-size: min(2.5vw, 3vh);
+    
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
 }
 
-/* Responsividade */
-@media (max-width: 800px) {
-    #hora { font-size: 110px; letter-spacing: 6px; }
-    #semana { font-size: 26px; }
-    .date-box { font-size: 30px; min-width: 70px; padding: 8px 14px; }
-    .date-group:nth-child(3) .date-box { min-width: 100px; font-size: 28px; }
-    .label { font-size: 16px; }
-}
+/* ================== AJUSTE FINO PARA CELULARES (VERTICAL) ================== */
+@media (orientation: portrait) {
+    /* No celular em pé, aumentamos a largura relativa pois temos pouca largura */
+    #hora {
+        font-size: 23vw; 
+    }
+    
+    .bottom-row {
+        gap: 2vw;
+    }
 
-@media (max-width: 420px) {
-    #hora { font-size: 72px; letter-spacing: 4px; }
-    #semana { font-size: 18px; }
-    .bottom-row { gap: 12px; }
-    .date-box { font-size: 20px; min-width: 56px; padding: 6px 8px; }
-    .date-group:nth-child(3) .date-box { min-width: 80px; font-size: 18px; }
-    .label { font-size: 12px; }
+    .date-box {
+        font-size: 6vw; /* Reduz um pouco para caber 4 caixas lado a lado */
+        padding: 0.1em 0.2em;
+    }
+
+    .label {
+        font-size: 2.5vw;
+    }
+    
+    .semana-text {
+        display: none; /* Esconde a semana (SEG/TER) se ficar muito apertado no celular */
+    }
 }

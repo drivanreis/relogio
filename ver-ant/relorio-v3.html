@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relógio Digital V3 - Otimizado</title>
+    <style>
+        /* CSS BÁSICO E COMPATÍVEL (2012) */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+            /* Usando fonte genérica monospace (a mais parecida com digital-7 que é universal) */
+            font-family: monospace; 
+            color: #FF0000; /* Vermelho principal */
+            display: table; /* Para centralização vertical */
+            overflow: hidden;
+        }
+
+        /* 1. Otimização para ocupar o MÁXIMO da tela (área amarela) */
+        #relogio-geral {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            /* Removemos o padding-bottom de 5% para maximizar a área */
+            padding: 0; 
+            box-sizing: border-box; /* Garante que o padding não cause overflow */
+        }
+
+        /* 2. ESTILO DO RELÓGIO PRINCIPAL (HORA) */
+        #hora {
+            /* Aumentamos o tamanho, usando 25vw para ser a fonte dominante */
+            font-size: 25vw; 
+            text-shadow: 0 0 18px rgba(255, 0, 0, 0.8); /* Brilho LED ligeiramente mais forte */
+            line-height: 1; 
+            margin-bottom: 30px; /* Espaço entre a Hora e a Data */
+            padding-top: 10px; /* Um pequeno ajuste para centralizar melhor no topo */
+        }
+        
+        /* 3. ESTILO DA DATA COMPACTA */
+        #data-compacta {
+            /* Tamanho menor que a hora (cerca de metade) */
+            font-size: 12vw; 
+            line-height: 1;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+            /* Padding inferior para afastar da barra de operações do tablet */
+            padding-bottom: 20px; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="relogio-geral">
+        <div id="hora">15:55:55</div>
+        <div id="data-compacta">13/12/2025</div>
+    </div>
+
+    <script>
+        // JAVASCRIPT LEGADO (2012)
+        
+        function formatarTempo(tempo) {
+            return (tempo < 10) ? "0" + tempo : tempo;
+        }
+
+        function atualizarRelogio() {
+            var data = new Date();
+            
+            // Lógica da Hora
+            var horas = data.getHours();
+            var minutos = data.getMinutes();
+            var segundos = data.getSeconds();
+
+            var tempoCompleto = formatarTempo(horas) + ":" + formatarTempo(minutos) + ":" + formatarTempo(segundos);
+            document.getElementById("hora").innerHTML = tempoCompleto;
+
+            // Lógica da Data (DD/MM/AAAA)
+            var dia = data.getDate();
+            var mesIndex = data.getMonth();
+            var ano = data.getFullYear();
+            
+            // O mês é base 0, então somamos 1
+            var dataFormatada = formatarTempo(dia) + "/" + formatarTempo(mesIndex + 1) + "/" + ano;
+            document.getElementById("data-compacta").innerHTML = dataFormatada;
+        }
+
+        // Inicia e repete a cada segundo
+        atualizarRelogio();
+        var intervalo = setInterval(atualizarRelogio, 1000);
+        
+        // A fase de temperatura foi removida para esta versão otimizada.
+    </script>
+
+</body>
+</html>
